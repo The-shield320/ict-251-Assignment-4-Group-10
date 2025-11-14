@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NGO Campaigns</title>
+  <script defer src="app.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --primary: #2c5aa0;
+      --primary-dark: #03330e;
+      --secondary: #4CAF50;
+      --secondary-dark: #3d8b40;
+      --accent: #FF6B6B;
+      --accent-dark: #e55a5a;
+      --light: #faf8f9;
+      --dark: #343a40;
+      --gray: #6c757d;
+      --light-gray: #2176cb;
+      --border-radius: 8px;
+      --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --transition: all 0.3s ease;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #0d141e 0%, #e4edf5 100%);
+      margin: 0;
+      padding: 40px 20px;
+      color: black;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background-color: rgb(48, 201, 89);
+      border-radius: 16px;
+      box-shadow: var(--box-shadow);
+      overflow: hidden;
+      padding: 40px;
+    }
+
+    h1 {
+      text-align: center;
+      color: var(--primary-dark);
+      margin-bottom: 30px;
+      font-weight: 700;
+      font-size: 2.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    h1:before {
+      content: "🌍";
+      font-size: 2rem;
+    }
+
+    .form-container {
+      background-color: var(--light);
+      border-radius: var(--border-radius);
+      padding: 25px;
+      margin-bottom: 40px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    form {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      min-width: 300px;
+      padding: 14px 18px;
+      font-size: 16px;
+      border: 1px solid var(--light-gray);
+      border-radius: var(--border-radius);
+      background-color: rgb(234, 226, 226);
+      transition: var(--transition);
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(44, 90, 160, 0.1);
+    }
+
+    button {
+      padding: 14px 28px;
+      font-size: 16px;
+      font-weight: 600;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    button:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    button.save-btn:before {
+      content: "💾";
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: rgb(190, 196, 194);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: var(--box-shadow);
+    }
+
+    thead {
+      background-color: var(--primary);
+    }
+
+    th {
+      padding: 18px 16px;
+      font-size: 16px;
+      font-weight: 600;
+      color: white;
+      text-align: left;
+      border-bottom: none;
+    }
+
+    tbody tr {
+      transition: var(--transition);
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: rgba(0, 0, 0, 0.02);
+    }
+
+    tbody tr:hover {
+      background-color: rgba(44, 90, 160, 0.05);
+    }
+
+    td {
+      padding: 16px;
+      font-size: 15px;
+      color: var(--dark);
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .edit-btn, .delete-btn {
+      padding: 8px 16px;
+      font-size: 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: var(--transition);
+      font-weight: 500;
+    }
+
+    .edit-btn {
+      background-color: var(--secondary);
+      color: white;
+    }
+
+    .edit-btn:hover {
+      background-color: red;
+    }
+
+    .delete-btn {
+      background-color: var(--accent);
+      color: rgb(205, 15, 15);
+    }
+
+    .delete-btn:hover {
+      background-color: var(--accent-dark);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px;
+      color: var(--gray);
+    }
+
+    .empty-state p {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      .container {
+        padding: 25px 20px;
+      }
+      
+      h1 {
+        font-size: 1.8rem;
+      }
+      
+      form {
+        flex-direction: column;
+      }
+      
+      input[type="text"] {
+        min-width: 100%;
+      }
+      
+      button {
+        width: 100%;
+      }
+      
+      table {
+        display: block;
+        overflow-x: auto;
+      }
+      
+      .actions {
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 20px 10px;
+      }
+      
+      .container {
+        padding: 20px 15px;
+        border-radius: 12px;
+      }
+      
+      h1 {
+        font-size: 1.5rem;
+      }
+      
+      .form-container {
+        padding: 20px;
+      }
+      
+      th, td {
+        padding: 12px 10px;
+        font-size: 14px;
+      }
+      
+      .edit-btn, .delete-btn {
+        padding: 6px 12px;
+        font-size: 13px;
+      }
+    }
+
+    /* Status indicators */
+    .status {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    
+    .status.active {
+      background-color: rgba(76, 175, 80, 0.15);
+      color: var(--secondary-dark);
+    }
+    
+    .status.draft {
+      background-color: rgba(255, 193, 7, 0.15);
+      color: #b38f00;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>NGO Cause Awareness Campaigns</h1>
+    
+    <div class="form-container">
+      <form id="campaign-form">
+        <input type="hidden" id="campaign-id">
+        <input type="text" id="campaign-name" placeholder="Enter campaign name" required>
+        <button type="submit" class="save-btn">Save Campaign</button>
+      </form>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Campaign Name</th>
+          <th>Created At</th>
+          <th>Updated At</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="campaign-table-body">
+        <!-- Empty state example -->
+        <!-- <tr>
+          <td colspan="5" class="empty-state">
+            <p>No campaigns yet</p>
+            <p>Add your first campaign using the form above</p>
+          </td>
+        </tr> -->
+      </tbody>
+    </table>
+  </div>
+  <div class="video">
+    <video src="VID/Screen Recording 2025-11-14 220000.mp4" controls  width="300px">Group 10 video</video>
+  </div>
+  
+</body>
+</html>
